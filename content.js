@@ -1,57 +1,57 @@
-let currentChatId = null; // Armazenar o ID da conversa atual  
-const iframeId = "custom_iframe";  
-const iframeSrc = chrome.runtime.getURL("iframe.html");  
+let currentPhone = null;  
 
 function addIframe() {  
-  if (document.getElementById(iframeId)) return; // Evitar múltiplas inserções  
+  const iframeId = 'myIframe';  
+  const existingIframe = document.getElementById(iframeId);  
 
-  const iframe = document.createElement("iframe");  
+  if (existingIframe) {  
+    return; // Remove se já existir  
+  }  
+
+  const iframe = document.createElement('iframe');  
   iframe.id = iframeId;  
-  iframe.style.width = "300px"; // Defina a largura do iframe  
-  iframe.style.height = "100%"; // Defina a altura do iframe  
+  iframe.style.width = "300px";  
+  iframe.style.height = "100%";  
   iframe.style.position = "fixed";  
   iframe.style.right = "0";  
   iframe.style.top = "0";  
   iframe.style.zIndex = "1000";  
   iframe.style.background = "white";  
-  iframe.src = iframeSrc;  
+  iframe.src = chrome.runtime.getURL("iframe.html");  
 
   document.body.appendChild(iframe);  
 }  
 
-function getCurrentChatId() {  
+function getCurrentChatPhone() {  
   const chatElement = document.querySelector("div[data-testid='cell-frame']");  
   if (chatElement) {  
-    return chatElement.dataset.id; // Ajuste isso para o ID real da conversa  
+    const phoneNumber = chatElement.getAttribute('data-testid').split('-')[1]; // Ajuste conforme necessário para pegar o número  
+    return phoneNumber; // Retorna o número correspondente  
   }  
   return null;  
 }  
 
-function monitorChatChanges() {  
-  const chatObserver = new MutationObserver(() => {  
-    const newChatId = getCurrentChatId();  
-    if (newChatId && newChatId !== currentChatId) {  
-      currentChatId = newChatId;  
-      // Realizar a requisição AJAX como necessário  
-      fetch(`iframe.php?phone=${currentChatId}`) // Altere para sua URL PHP  
-        .then(response => response.text())  
-        .then(data => {  
-          const iframe = document.getElementById(iframeId);  
-          if (iframe) {  
-            iframe.contentWindow.postMessage({ phone: currentChatId, content: data }, "*");  
-          }  
-        })  
-        .catch(error => console.error("Erro ao buscar dados:", error)); // Tratamento de erro  
+function monitorMessages() {  
+  const messageObserver = new MutationObserver(() => {  
+    const phone = getCurrentChatPhone();  
+    if (phone && phone !== currentPhone) {  
+      currentPhone = phone;  
+
+      // Aqui você pode fazer uma requisição para atualizar o iframe  
+      const iframe = document.getElementById('myIframe');  
+      if (iframe) {  
+        iframe.contentWindow.postMessage({ phone: currentPhone, message: "Recebi como parâmetro" }, "*");  
+      }  
     }  
   });  
 
-  const chatContainer = document.querySelector("div[data-testid='chat-list']");  
+  const chatContainer = document.querySelector("div[data-testid='chatlist']");  
   if (chatContainer) {  
-    chatObserver.observe(chatContainer, { childList: true, subtree: true });  
+    messageObserver.observe(chatContainer, { childList: true, subtree: true });  
   }  
 }  
 
 window.onload = function() {  
   addIframe();  
-  monitorChatChanges();  
+  monitorMessages();  
 };
