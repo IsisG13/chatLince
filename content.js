@@ -1,53 +1,57 @@
-let iframe;
-let lastPhoneNumber = "";
+let currentChatId = null; // Armazenar o ID da conversa atual  
+const iframeId = "custom_iframe";  
+const iframeSrc = chrome.runtime.getURL("iframe.html");  
 
-function injectIframe(phoneNumber) {
-  if (!iframe) {
-    iframe = document.createElement("iframe");
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    const container = document.querySelector('#side');
-    container.appendChild(iframe);
-  }
-  iframe.src = `http://localhost/iframe.php?phone=${phoneNumber}`;
-}
+function addIframe() {  
+  if (document.getElementById(iframeId)) return; // Evitar múltiplas inserções  
 
-function getPhoneNumber() {
-  const chatTitle = document.querySelector("#main header span[title]");
-  return chatTitle ? chatTitle.innerText : null;
-}
+  const iframe = document.createElement("iframe");  
+  iframe.id = iframeId;  
+  iframe.style.width = "300px"; // Defina a largura do iframe  
+  iframe.style.height = "100%"; // Defina a altura do iframe  
+  iframe.style.position = "fixed";  
+  iframe.style.right = "0";  
+  iframe.style.top = "0";  
+  iframe.style.zIndex = "1000";  
+  iframe.style.background = "white";  
+  iframe.src = iframeSrc;  
 
-function monitorConversationChanges() {
-  const observer = new MutationObserver(() => {
-    const phoneNumber = getPhoneNumber();
-    if (phoneNumber && phoneNumber !== lastPhoneNumber) {
-      injectIframe(phoneNumber);
-      lastPhoneNumber = phoneNumber;
-    }
-  });
+  document.body.appendChild(iframe);  
+}  
 
-  const chatArea = document.querySelector("#main");
-  observer.observe(chatArea, { childList: true, subtree: true });
-}
+function getCurrentChatId() {  
+  const chatElement = document.querySelector("div[data-testid='cell-frame']");  
+  if (chatElement) {  
+    return chatElement.dataset.id; // Ajuste isso para o ID real da conversa  
+  }  
+  return null;  
+}  
 
-function addToggleButton() {
-  const button = document.createElement("button");
-  button.id = "toggleBot";
-  button.innerText = "ON/OFF";
-  button.addEventListener("click", () => {
-    const isActive = button.classList.toggle("active");
-    chrome.storage.local.set({ botActive: isActive });
-    // Lógica para desativar o bot pode ser colocada aqui
-  });
+function monitorChatChanges() {  
+  const chatObserver = new MutationObserver(() => {  
+    const newChatId = getCurrentChatId();  
+    if (newChatId && newChatId !== currentChatId) {  
+      currentChatId = newChatId;  
+      // Realizar a requisição AJAX como necessário  
+      fetch(`iframe.php?phone=${currentChatId}`) // Altere para sua URL PHP  
+        .then(response => response.text())  
+        .then(data => {  
+          const iframe = document.getElementById(iframeId);  
+          if (iframe) {  
+            iframe.contentWindow.postMessage({ phone: currentChatId, content: data }, "*");  
+          }  
+        })  
+        .catch(error => console.error("Erro ao buscar dados:", error)); // Tratamento de erro  
+    }  
+  });  
 
-  const container = document.querySelector('#side');
-  container.appendChild(button);
-}
+  const chatContainer = document.querySelector("div[data-testid='chat-list']");  
+  if (chatContainer) {  
+    chatObserver.observe(chatContainer, { childList: true, subtree: true });  
+  }  
+}  
 
-chrome.storage.local.get(["botActive"], (result) => {
-  if (result.botActive) {
-    addToggleButton();
-    monitorConversationChanges();
-  }
-});
+window.onload = function() {  
+  addIframe();  
+  monitorChatChanges();  
+};
