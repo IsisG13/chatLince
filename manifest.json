@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "WhatsApp Web Bot Control",
+    "version": "1.0",
+    "description": "Extensão que carrega um iframe com uma página PHP e controla um bot com um botão ON/OFF.",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage",
+      "webRequest"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://web.whatsapp.com/*"],
+        "js": ["content.js"],
+        "css": ["styles.css"]
+      }
+    ]
+  }
+  
