@@ -1,3 +1,5 @@
+let isActive = true; // Estado inicial do botão
+
 // Função para injetar o iframe
 function injectIframe() {
     const iframe = document.createElement('iframe');
@@ -10,7 +12,6 @@ function injectIframe() {
     iframe.style.left = '60%';
     iframe.style.top = '7%';
     iframe.style.border = '1px solid black';
-    console.log("iframe", iframe)
     document.body.appendChild(iframe); // Injeta o iframe diretamente no body
 
     return iframe;
@@ -19,7 +20,6 @@ function injectIframe() {
 // Função para atualizar o iframe
 function updateIframe(iframe) {
     const phoneNumber = getPhoneNumber();
-    console.log("phoneNumber", phoneNumber)
     if (phoneNumber) {
         iframe.src = chrome.runtime.getURL(`iframe.html?phone=${encodeURIComponent(phoneNumber)}`);
     }
@@ -33,11 +33,13 @@ function getPhoneNumber() {
 
 // Observador de mutações para detectar mudanças na conversa
 const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-        if (mutation.type === 'childList' || mutation.type === 'subtree') {
-            const iframe = document.querySelector('iframe');
-            if (iframe) {
-                updateIframe(iframe);
+    if (isActive) { // Verifica se o botão está ativado
+        for (const mutation of mutations) {
+            if (mutation.type === 'childList' || mutation.type === 'subtree') {
+                const iframe = document.querySelector('iframe');
+                if (iframe) {
+                    updateIframe(iframe);
+                }
             }
         }
     }
@@ -55,5 +57,23 @@ window.addEventListener('load', () => {
         });
     } else {
         console.error("Iframe não foi injetado!");
+    }
+});
+
+
+// Listener para mensagens do iframe
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'toggle') {
+        isActive = event.data.active;
+        if (!isActive) {
+            // Parar a observação das mutações
+            observer.disconnect();
+        } else {
+            // Reiniciar a observação das mutações
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
     }
 });
