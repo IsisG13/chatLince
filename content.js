@@ -2,8 +2,13 @@
 function injectIframe() {
       const iframe = document.createElement('iframe');
       iframe.src = chrome.runtime.getURL('iframe.html');
-      iframe.style.width = '100%';
-      iframe.style.height = '300px';
+      iframe.style.width = '39%';
+      iframe.style.height = '110';
+      iframe.style.background = 'white';
+      iframe.style.zIndex = '2000';
+      iframe.style.position = 'absolute';
+      iframe.style.left = '60%';
+      iframe.style.top = '7%';
       iframe.style.border = 'none';
       console.log("iframe", iframe)
       document.body.appendChild(iframe); // Injeta o iframe diretamente no body
