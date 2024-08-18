@@ -4,7 +4,7 @@ function updateContent() {
     const content = document.getElementById('content');
     
     if (phone) {
-      content.textContent = `Recebi como parâmetro o telefone: ${phone}`;
+      content.textContent = `${phone} enviou uma mensagem para você.`;
     } else {
       content.textContent = 'Nenhum número de telefone recebido.';
     }
