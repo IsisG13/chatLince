@@ -1,15 +1,20 @@
 {
-    "manifest_version": 3,
-    "name": "WhatsApp Web Message Monitor",
+    "manifest_version": 2,
+    "name": "WhatsApp Web Extension",
     "version": "1.0",
+    "description": "Extensão para adicionar funcionalidades ao WhatsApp Web",
     "permissions": [
-      "activeTab",
-      "scripting"
+    "activeTab",
+    "https://web.whatsapp.com/*"
     ],
     "content_scripts": [
-      {
-        "matches": ["https://web.whatsapp.com/*"],
-        "js": ["content.js"]
-      }
+    {
+    "matches": ["https://web.whatsapp.com/*"],
+    "js": ["content.js"],
+    "css": ["styles.css"]
+    }
+    ],
+    "web_accessible_resources": [
+    "iframe.html"
     ]
-  }  
+   }
