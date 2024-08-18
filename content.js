@@ -17,11 +17,18 @@ function injectIframe() {
     return iframe;
 }
 
-// Função para atualizar o iframe
+function getLastMessage() {
+    const messages = document.querySelectorAll('div.message-in, div.message-out');
+    const lastMessage = messages[messages.length - 1];
+    const messageElement = lastMessage ? lastMessage.querySelector('div.copyable-text') : null;
+    return messageElement ? messageElement.textContent.trim() : '...';
+}
+
 function updateIframe(iframe) {
     const phoneNumber = getPhoneNumber();
+    const lastMessage = getLastMessage();
     if (phoneNumber) {
-        iframe.src = chrome.runtime.getURL(`iframe.html?phone=${encodeURIComponent(phoneNumber)}`);
+        iframe.src = chrome.runtime.getURL(`iframe.html?phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(lastMessage)}`);
     }
 }
 
@@ -31,7 +38,7 @@ function getPhoneNumber() {
     return headerTitle ? headerTitle.textContent : '...';
 }
 
-// Observador de mutações para detectar mudanças na conversa
+// Adicione um MutationObserver para atualizar o iframe quando novas mensagens são recebidas
 const observer = new MutationObserver((mutations) => {
     if (isActive) { // Verifica se o botão está ativado
         for (const mutation of mutations) {
