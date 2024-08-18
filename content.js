@@ -31,19 +31,6 @@ function getPhoneNumber() {
     return headerTitle ? headerTitle.textContent : '...';
 }
 
-// Função para criar o botão ON/OFF
-function createToggleButton() {
-    const button = document.createElement('button');
-    button.textContent = 'Bot: ON';
-    button.classList.add('toggle-button');
-    button.addEventListener('click', () => {
-        const isOn = button.textContent === 'Bot: ON';
-        button.textContent = isOn ? 'Bot: OFF' : 'Bot: ON';
-        // Aqui você pode adicionar a lógica para ativar/desativar o bot
-    });
-    return button;
-}
-
 // Observador de mutações para detectar mudanças na conversa
 const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
@@ -61,8 +48,6 @@ window.addEventListener('load', () => {
     const iframe = injectIframe();
     if (iframe) {
         updateIframe(iframe);
-        const toggleButton = createToggleButton();
-        iframe.parentNode.insertBefore(toggleButton, iframe);
 
         observer.observe(document.body, {
             childList: true,
