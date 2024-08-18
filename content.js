@@ -9,13 +9,12 @@ function injectIframe() {
     iframe.style.position = 'absolute';
     iframe.style.left = '60%';
     iframe.style.top = '7%';
-    iframe.style.border = 'none';
+    iframe.style.border = '1px solid black';
     console.log("iframe", iframe)
     document.body.appendChild(iframe); // Injeta o iframe diretamente no body
 
     return iframe;
 }
-
 
 // Função para atualizar o iframe
 function updateIframe(iframe) {
