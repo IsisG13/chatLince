@@ -1,14 +1,15 @@
-{  
-  "manifest_version": 3,  
-  "name": "WhatsApp Extension",  
-  "version": "1.0",  
-  "description": "Exibe um quadrado com 'TESTE' no WhatsApp Web.",  
-  "content_scripts": [  
-    {  
-      "matches": ["https://web.whatsapp.com/*"],  
-      "js": ["content.js"],  
-      "css": ["styles.css"]  
-    }  
-  ],  
-  "permissions": []
-}
+{
+    "manifest_version": 3,
+    "name": "WhatsApp Web Message Monitor",
+    "version": "1.0",
+    "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://web.whatsapp.com/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }  
