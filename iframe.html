@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Web Extension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    function updateContent() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const phone = urlParams.get('phone');
+      const content = document.getElementById('content');
+      
+      if (phone) {
+        content.textContent = `Recebi como parâmetro o telefone: ${phone}`;
+      } else {
+        content.textContent = 'Nenhum número de telefone recebido.';
+      }
+    }
+
+    window.addEventListener('load', updateContent);
+    window.addEventListener('message', (event) => {
+      if (event.data === 'update') {
+        updateContent();
+      }
+    });
+  </script>
+</body>
+</html>

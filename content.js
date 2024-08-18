@@ -1,40 +1,54 @@
-function initMessageCapture() {
-    console.log('Inicializando captura de mensagens...');
+// Função para injetar o iframe
+function injectIframe() {
+      const iframe = document.createElement('iframe');
+      iframe.src = chrome.runtime.getURL('iframe.html');
+      iframe.style.width = '100%';
+      iframe.style.height = '300px';
+      iframe.style.border = 'none';
+      console.log("iframe", iframe)
+      return iframe;
+  }
 
-    // Função para capturar mensagens
-    function captureMessages() {
-        const messages = document.querySelectorAll('div.message-in, div.message-out');
-        messages.forEach(message => {
-            const authorElement = message.querySelector('span[data-testid="author"]');
-            const messageElement = message.querySelector('div.copyable-text');
-
-            if (messageElement && !messageElement.dataset.captured) {
-                const author = authorElement ? authorElement.textContent.trim() : 'Você';
-                const messageText = messageElement.textContent.trim();
-                console.log(`${author}: ${messageText}`);
-                messageElement.dataset.captured = 'true';
-            }
-        });
+  
+  // Função para atualizar o iframe
+  function updateIframe(iframe) {
+    const phoneNumber = getPhoneNumber();
+    console.log("phoneNumber", phoneNumber)
+    if (phoneNumber) {
+      iframe.src = chrome.runtime.getURL(`iframe.html?phone=${encodeURIComponent(phoneNumber)}`);
     }
+  }
+  
+  // Função para obter o número de telefone da conversa atual
+  function getPhoneNumber() {
+    const headerTitle = document.querySelector('header span[title]'); // Seletor para o nome do contato
+    return headerTitle ? headerTitle.textContent : null;
+  }
+  
+  // Observador de mutações para detectar mudanças na conversa
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList' || mutation.type === 'subtree') {
+        const iframe = document.querySelector('iframe');
+        if (iframe) {
+          updateIframe(iframe);
+        }
+      }
+    }
+  }); 
 
-    // Observar mudanças na página
-    const observer = new MutationObserver((mutations) => {
-        captureMessages();
-    });
-
-    // Configuração do observer
-    const config = { childList: true, subtree: true };
-
-    // Iniciar observação
-    observer.observe(document.body, config);
-
-    // Capturar mensagens existentes
-    captureMessages();
-}
-
-// Executar a função quando a página estiver carregada
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMessageCapture);
-} else {
-    initMessageCapture();
-}
+  // Inicialização
+  window.addEventListener('load', () => {
+    const iframe = injectIframe();
+    if (iframe) {
+      updateIframe(iframe);
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    } else {
+      console.error("Iframe não foi injetado!");
+    }
+  });
+  

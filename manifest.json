@@ -1,14 +1,28 @@
 {
     "manifest_version": 3,
-    "name": "WhatsApp Message Logger",
+    "name": "WhatsApp Web Extension",
     "version": "1.0",
-    "description": "Captura e exibe números de telefone e mensagens do WhatsApp Web no console",
-    "permissions": ["https://web.whatsapp.com/"],
+    "description": "Extensão para adicionar funcionalidades ao WhatsApp Web",
+    "permissions": [
+      "activeTab",
+      "https://web.whatsapp.com/*"
+    ],
     "content_scripts": [
       {
-        "matches": ["https://web.whatsapp.com/"],
-        "js": ["content.js"]
+        "matches": ["https://web.whatsapp.com/*"],
+        "js": ["content.js"],
+        "css": ["styles.css"]
       }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "iframe.html"
+            ],
+            "matches": [
+                "https://web.whatsapp.com/*"
+            ]
+        }
     ]
   }
   
