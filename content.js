@@ -6,6 +6,8 @@ function injectIframe() {
       iframe.style.height = '300px';
       iframe.style.border = 'none';
       console.log("iframe", iframe)
+      document.body.appendChild(iframe); // Injeta o iframe diretamente no body
+
       return iframe;
   }
 
@@ -21,8 +23,8 @@ function injectIframe() {
   
   // Função para obter o número de telefone da conversa atual
   function getPhoneNumber() {
-    const headerTitle = document.querySelector('header span[title]'); // Seletor para o nome do contato
-    return headerTitle ? headerTitle.textContent : null;
+    const headerTitle = document.querySelector('header span[dir="auto"]'); // Seletor para o nome do contato
+    return headerTitle ? headerTitle.textContent : 'Selecione algum contato';
   }
   
   // Observador de mutações para detectar mudanças na conversa
