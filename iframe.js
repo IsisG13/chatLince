@@ -1,3 +1,5 @@
+// IFRAME.JS
+
 let isActive = true; // Estado inicial do botão
 
 function updateContent() {
@@ -15,15 +17,15 @@ function updateContent() {
     }
 }
 
-
 function toggleExtension() {
     isActive = !isActive;
     const button = document.getElementById('toggleButton');
     button.textContent = isActive ? 'ON' : 'OFF';
     
     // Enviar mensagem para o content script
-    window.postMessage({ type: 'toggle', active: isActive }, '*');
+    parent.postMessage({ type: 'toggle', active: isActive }, '*');
 }
+
 
 window.addEventListener('load', () => {
     updateContent();
@@ -32,6 +34,16 @@ window.addEventListener('load', () => {
 
 window.addEventListener('message', (event) => {
     if (event.data.type === 'update') {
-        updateContent();
+        const phone = event.data.phone;
+        const message = event.data.message;
+        const content = document.getElementById('content');
+        
+        if (phone && message) {
+            content.textContent = `${phone} enviou uma mensagem: "${message}".`;
+        } else if (phone) {
+            content.textContent = `${phone} enviou uma mensagem para você.`;
+        } else {
+            content.textContent = 'Nenhum número de telefone recebido.';
+        }
     }
 });

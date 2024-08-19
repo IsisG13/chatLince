@@ -1,3 +1,5 @@
+// CONTENT.JS
+
 let isActive = true; // Estado inicial do botão
 
 // Função para injetar o iframe
@@ -28,9 +30,14 @@ function updateIframe(iframe) {
     const phoneNumber = getPhoneNumber();
     const lastMessage = getLastMessage();
     if (phoneNumber) {
-        iframe.src = chrome.runtime.getURL(`iframe.html?phone=${encodeURIComponent(phoneNumber)}&message=${encodeURIComponent(lastMessage)}`);
+        iframe.contentWindow.postMessage({
+            type: 'update',
+            phone: phoneNumber,
+            message: lastMessage
+        }, '*');
     }
 }
+
 
 // Função para obter o número de telefone da conversa atual
 function getPhoneNumber() {
@@ -38,21 +45,51 @@ function getPhoneNumber() {
     return headerTitle ? headerTitle.textContent : '...';
 }
 
-// Adicione um MutationObserver para atualizar o iframe quando novas mensagens são recebidas
+// Adapte a função de atualização para adicionar novamente os listeners quando houver uma atualização  
 const observer = new MutationObserver((mutations) => {
-    if (isActive) { // Verifica se o botão está ativado
+    console.log("Ativo", isActive)
+    if (!isActive) {
+        return (
+            alert ("Testando comunicação")
+        )
+    }
+    if (isActive) { // Verifica se o botão está ativado  
         for (const mutation of mutations) {
             if (mutation.type === 'childList' || mutation.type === 'subtree') {
                 const iframe = document.querySelector('iframe');
                 if (iframe) {
                     updateIframe(iframe);
+                    addMouseListeners(); // Adiciona os listeners toda vez que o iframe é atualizado  
                 }
             }
         }
     }
 });
 
-// Inicialização
+
+// Função para adicionar/remover eventos de mouse em mensagens  
+function addMouseListeners() {
+    const messages = document.querySelectorAll('div.message-in, div.message-out');
+
+    messages.forEach(message => {
+        message.addEventListener('mouseover', () => {
+            if (isActive) {
+                observer.disconnect();
+            }
+        });
+
+        message.addEventListener('mouseout', () => {
+            if (isActive) {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+        });
+    });
+}
+
+// Inicialização  
 window.addEventListener('load', () => {
     const iframe = injectIframe();
     if (iframe) {
@@ -62,6 +99,9 @@ window.addEventListener('load', () => {
             childList: true,
             subtree: true
         });
+
+        // Chamar a função para adicionar eventos de mouse  
+        addMouseListeners();
     } else {
         console.error("Iframe não foi injetado!");
     }
@@ -72,15 +112,11 @@ window.addEventListener('load', () => {
 window.addEventListener('message', (event) => {
     if (event.data.type === 'toggle') {
         isActive = event.data.active;
+        console.log("Estado ativo:", isActive); // Adiciona log para depuração
         if (!isActive) {
-            // Parar a observação das mutações
-            observer.disconnect();
+            observer.disconnect(); // Parar a observação das mutações
         } else {
-            // Reiniciar a observação das mutações
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
+            observer.observe(document.body, { childList: true, subtree: true });
         }
     }
 });
