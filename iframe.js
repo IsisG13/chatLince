@@ -11,7 +11,7 @@ function updateContent() {
     if (phone && message) {
         content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;
     } else if (phone) {
-        content.textContent = `Cha de ${phone} aberto.`;
+        content.textContent = `Chat de ${phone} aberto.`;
     } else {
         content.textContent = 'Nenhum chat aberto.';
     }
@@ -41,7 +41,7 @@ window.addEventListener('message', (event) => {
         if (phone && message) {
             content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;
         } else if (phone) {
-            content.textContent = `Cha de ${phone} aberto.`;
+            content.textContent = `Chat de ${phone} aberto.`;
         } else {
             content.textContent = 'Nenhum chat aberto.';
         }
