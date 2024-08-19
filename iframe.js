@@ -9,11 +9,11 @@ function updateContent() {
     const content = document.getElementById('content');
     
     if (phone && message) {
-        content.textContent = `${phone} enviou uma mensagem: "${message}".`;
+        content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;
     } else if (phone) {
-        content.textContent = `${phone} enviou uma mensagem para você.`;
+        content.textContent = `Cha de ${phone} aberto.`;
     } else {
-        content.textContent = 'Nenhum número de telefone recebido.';
+        content.textContent = 'Nenhum chat aberto.';
     }
 }
 
@@ -39,11 +39,11 @@ window.addEventListener('message', (event) => {
         const content = document.getElementById('content');
         
         if (phone && message) {
-            content.textContent = `${phone} enviou uma mensagem: "${message}".`;
+            content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;
         } else if (phone) {
-            content.textContent = `${phone} enviou uma mensagem para você.`;
+            content.textContent = `Cha de ${phone} aberto.`;
         } else {
-            content.textContent = 'Nenhum número de telefone recebido.';
+            content.textContent = 'Nenhum chat aberto.';
         }
     }
 });
