@@ -7,7 +7,7 @@ function injectIframe() {
     const iframe = document.createElement('iframe');
     iframe.src = chrome.runtime.getURL('iframe.html');
     iframe.style.width = '39%';
-    iframe.style.height = '110';
+    iframe.style.height = '130';
     iframe.style.background = 'white';
     iframe.style.zIndex = '2000';
     iframe.style.position = 'absolute';

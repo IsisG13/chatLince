@@ -13,7 +13,7 @@ function updateContent() {
     } else if (phone) {  
         content.textContent = `Chat de ${phone} aberto.`;  
     } else {  
-        content.textContent = 'Nenhum chat aberto.';  
+        content.textContent = 'Carregando bot...';  
     }  
 
     // Verifica se o bot está desativado e atualiza a mensagem  
@@ -50,7 +50,7 @@ window.addEventListener('message', (event) => {
         } else if (phone) {  
             content.textContent = `Chat de ${phone} aberto.`;  
         } else {  
-            content.textContent = 'Nenhum chat aberto.';  
+            content.textContent = 'Carregando bot...';  
         }  
 
         // Verifica se o bot está desativado e atualiza a mensagem  
