@@ -53,7 +53,7 @@ const observer = new MutationObserver((mutations) => {
             alert ("Testando comunicação")
         )
     }
-    if (isActive) { // Verifica se o botão está ativado  
+    if (isActive) { // Verifica se o botão está ativo
         for (const mutation of mutations) {
             if (mutation.type === 'childList' || mutation.type === 'subtree') {
                 const iframe = document.querySelector('iframe');
@@ -112,7 +112,7 @@ window.addEventListener('load', () => {
 window.addEventListener('message', (event) => {
     if (event.data.type === 'toggle') {
         isActive = event.data.active;
-        console.log("Estado ativo:", isActive); // Adiciona log para depuração
+        console.log("Estado bot:", isActive); // Adiciona log para depuração
         if (!isActive) {
             observer.disconnect(); // Parar a observação das mutações
         } else {
