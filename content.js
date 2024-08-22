@@ -3,20 +3,21 @@
 let isActive = true; // Estado inicial do botão
 
 // Função para injetar o iframe
-function injectIframe() {
-    const iframe = document.createElement('iframe');
-    iframe.src = chrome.runtime.getURL('iframe.html');
-    iframe.style.width = '39%';
-    iframe.style.height = '130';
-    iframe.style.background = 'white';
-    iframe.style.zIndex = '2000';
-    iframe.style.position = 'absolute';
-    iframe.style.left = '60%';
-    iframe.style.top = '7%';
-    iframe.style.border = '1px solid black';
-    document.body.appendChild(iframe); // Injeta o iframe diretamente no body
+// Função para injetar o iframe  
+function injectIframe() {  
+    const iframe = document.createElement('iframe');  
+    iframe.src = chrome.runtime.getURL('iframe.html');  
+    iframe.style.width = '30%'; // Ajustar a largura do iframe para 30%  
+    iframe.style.height = '100%'; // Ajustar a altura do iframe para 100% da tela  
+    iframe.style.background = 'white';  
+    iframe.style.zIndex = '2000';  
+    iframe.style.position = 'fixed'; // Usar posição fixa para que o iframe permaneça no lugar  
+    iframe.style.right = '0'; // Alinhar o iframe à direita  
+    iframe.style.top = '0'; // Alinhar o iframe ao topo  
+    iframe.style.border = '1px solid black';  
+    document.body.appendChild(iframe); // Injeta o iframe diretamente no body  
 
-    return iframe;
+    return iframe;  
 }
 
 function getLastMessage() {
