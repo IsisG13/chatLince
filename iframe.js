@@ -1,61 +1,40 @@
-// IFRAME.JS  
+// iframe.js
 
-let isActive = true; // Estado inicial do botão  
+let isActive = true; // Estado inicial do bot
 
-function updateContent() {  
-    const urlParams = new URLSearchParams(window.location.search);  
-    const phone = urlParams.get('phone');  
-    const message = urlParams.get('message');  
-    const content = document.getElementById('content');  
-    
-    if (phone && message) {  
-        content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;  
-    } else if (phone) {  
-        content.textContent = `Chat de ${phone} aberto.`;  
-    } else {  
-        content.textContent = 'Carregando bot...';  
-    }  
+// Atualiza a interface do iframe com as informações fornecidas
+function updateUI(data) {
+    const statusIndicator = document.getElementById('status-indicator');
+    const chatTitleElement = document.getElementById('chat-title');
+    const lastMessageElement = document.getElementById('last-message');
+    const toggleButton = document.getElementById('toggle-button');
 
-    // Verifica se o bot está desativado e atualiza a mensagem  
-    if (!isActive) {  
-        content.textContent = 'Bot desativado.';  
-    }  
-}  
+    isActive = data.isActive;
 
-function toggleExtension() {  
-    isActive = !isActive;  
-    const button = document.getElementById('toggleButton');  
-    button.textContent = isActive ? 'ON' : 'OFF';  
+    statusIndicator.textContent = isActive ? 'Bot ON' : 'Bot OFF';
+    statusIndicator.style.color = isActive ? 'green' : 'red';
 
-    // Enviar mensagem para o content script  
-    parent.postMessage({ type: 'toggle', active: isActive }, '*');  
+    chatTitleElement.textContent = data.chatTitle || '...';
+    lastMessageElement.textContent = data.lastMessage || '...';
 
-    // Atualizar o conteúdo   
-    updateContent(); // Chama updateContent para atualizar a mensagem  
-}  
+    toggleButton.textContent = isActive ? 'Bot OFF' : ' Bot ON';
+}
 
-window.addEventListener('load', () => {  
-    updateContent();  
-    document.getElementById('toggleButton').addEventListener('click', toggleExtension);  
-});  
+// Envia uma mensagem para o content script para alterar o estado do bot
+function toggleBot() {
+    isActive = !isActive;
+    window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
+}
 
-window.addEventListener('message', (event) => {  
-    if (event.data.type === 'update') {  
-        const phone = event.data.phone;  
-        const message = event.data.message;  
-        const content = document.getElementById('content');  
-        
-        if (phone && message) {  
-            content.textContent = `Chat de ${phone} aberto. última mensagem dessa conversa foi: "${message}".`;  
-        } else if (phone) {  
-            content.textContent = `Chat de ${phone} aberto.`;  
-        } else {  
-            content.textContent = 'Carregando bot...';  
-        }  
+// Listener para mensagens recebidas do content script
+window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'update') {
+        updateUI(event.data);
+    }
+});
 
-        // Verifica se o bot está desativado e atualiza a mensagem  
-        if (!isActive) {  
-            content.textContent = 'Bot desativado.';  
-        }  
-    }  
+// Inicialização ao carregar o iframe
+window.addEventListener('load', () => {
+    const toggleButton = document.getElementById('toggle-button');
+    toggleButton.addEventListener('click', toggleBot);
 });

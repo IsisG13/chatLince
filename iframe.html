@@ -1,34 +1,52 @@
-<!-- IFRAME.HTML -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhatsApp Web Extension</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 10px;
-    }
-    .toggle-button {
-      background-color: #128C7E;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      margin: 5px;
-      cursor: pointer;
-      border-radius: 3px;
-    }
-    .toggle-button:hover {
-      background-color: #075E54;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot WhatsApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #status-indicator {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #chat-info {
+            margin-bottom: 20px;
+        }
+        #chat-info h3 {
+            margin: 0 0 10px 0;
+        }
+        #chat-info p {
+            margin: 5px 0;
+        }
+        #toggle-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #128C7E;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #toggle-button:hover {
+            background-color: #075E54;
+        }
+    </style>
 </head>
 <body>
-  <h4>Nova mensagem!</h4>
-  <div id="content"></div>
-  <button id="toggleButton" class="toggle-button">ON</button>
-  <script src="iframe.js"></script>
+    <div id="status-indicator">ON</div>
+    <div id="chat-info">
+        <p><strong>Contato:</strong> <span id="chat-title">...</span></p>
+        <p><strong>Última Mensagem:</strong> <span id="last-message">...</span></p>
+    </div>
+    <button id="toggle-button">Bot OFF</button>
+
+    <script src="iframe.js"></script>
 </body>
 </html>
