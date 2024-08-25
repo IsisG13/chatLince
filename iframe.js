@@ -1,10 +1,9 @@
-let isActive = true; // Estado inicial do bot
+let isActive = true;
 
 // Atualiza a interface do iframe com as informações fornecidas
 function updateUI(data) {
     const statusIndicator = document.getElementById('status-indicator');
     const chatTitleElement = document.getElementById('chat-title');
-    const lastMessageElement = document.getElementById('last-message');
     const toggleButton = document.getElementById('toggle-button');
 
     isActive = data.isActive;
@@ -12,13 +11,7 @@ function updateUI(data) {
     statusIndicator.textContent = isActive ? 'Bot ON' : `Bot desativado para: ${data.chatTitle}`;
     statusIndicator.style.color = isActive ? 'green' : 'red';
 
-    if (!isActive) {
-        chatTitleElement.textContent = '';
-        lastMessageElement.textContent = '';
-    } else {
-        chatTitleElement.textContent = data.chatTitle || '...';
-        lastMessageElement.textContent = data.lastMessage || '...';
-    }
+    chatTitleElement.textContent = isActive ? data.chatTitle || '...' : '';
 
     toggleButton.textContent = isActive ? 'Bot OFF' : 'Bot ON';
 }

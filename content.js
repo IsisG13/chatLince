@@ -1,5 +1,3 @@
-// content.js
-
 let isActive = true; // Estado inicial do bot
 
 // Função para injetar o iframe
@@ -29,25 +27,6 @@ function injectIframe() {
     return iframe;
 }
 
-// Função para adicionar/remover eventos de mouse em mensagens  
-function addMouseListeners() {
-    const messages = document.querySelectorAll('div.message-in, div.message-out');
-
-    messages.forEach(message => {
-        message.addEventListener('mouseover', () => {
-            if (isActive) {
-                observer.disconnect(); // Desconecta o observador ao passar o mouse  
-            }
-        });
-
-        message.addEventListener('mouseout', () => {
-            if (isActive) {
-                observer.observe(document.body, { childList: true, subtree: true }); // Reativa a observação  
-            }
-        });
-    });
-}
-
 // Função para verificar o estado do bot com base no chat atual
 function checkBotState() {
     const chatId = getChatId();
@@ -65,16 +44,6 @@ function getChatId() {
     return headerTitle ? headerTitle.textContent : '...'; // Retorna o nome do contato ou '...'
 }
 
-// Função para obter a última mensagem da conversa atual
-function getLastMessage() {
-    const messages = document.querySelectorAll('div.message-in, div.message-out');
-    if (messages.length === 0) return '...';
-
-    const lastMessage = messages[messages.length - 1];
-    const messageText = lastMessage.querySelector('span.selectable-text');
-    return messageText ? messageText.innerText : '...';
-}
-
 // Função para atualizar o iframe com as informações atuais
 function updateIframe() {
     const iframe = document.getElementById('my-custom-iframe');
@@ -84,7 +53,6 @@ function updateIframe() {
         type: 'update',
         isActive: isActive,
         chatTitle: getChatId(),
-        lastMessage: getLastMessage()
     };
 
     iframe.contentWindow.postMessage(data, '*');
@@ -122,20 +90,6 @@ window.addEventListener('message', (event) => {
     }
 });
 
-// Observador para detectar novas mensagens no chat atual
-const messageObserver = new MutationObserver((mutationsList, observer) => {
-    if (!isActive) return;
-
-    for (let mutation of mutationsList) {
-        if (mutation.addedNodes.length > 0) {
-            // Aqui você pode adicionar a lógica do bot para processar novas mensagens
-            console.log('Nova mensagem recebida:', getLastMessage());
-            updateIframe();
-            break;
-        }
-    }
-});
-
 // Iniciar observação de mudanças no chat
 function startChatObserver() {
     const chatList = document.querySelector('#pane-side');
@@ -147,28 +101,10 @@ function startChatObserver() {
     }
 }
 
-// Iniciar observação de novas mensagens
-function startMessageObserver() {
-    const chatContainer = document.querySelector('div.copyable-area');
-    if (chatContainer) {
-        const messagesContainer = chatContainer.querySelector('div[role="region"]');
-        if (messagesContainer) {
-            messageObserver.observe(messagesContainer, { childList: true, subtree: true });
-        } else {
-            setTimeout(startMessageObserver, 1000);
-        }
-    } else {
-        setTimeout(startMessageObserver, 1000);
-    }
-}
-
 // Inicialização ao carregar a página
 window.addEventListener('load', () => {
     injectIframe();
     updateIframe();
     startChatObserver();
-    startMessageObserver();
-    
-    // Chamar a função para adicionar eventos de mouse  
-    addMouseListeners();
 });
+
