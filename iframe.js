@@ -12,8 +12,13 @@ function updateUI(data) {
     statusIndicator.textContent = isActive ? 'Bot ON' : 'Bot OFF';
     statusIndicator.style.color = isActive ? 'green' : 'red';
 
-    chatTitleElement.textContent = data.chatTitle || '...';
-    lastMessageElement.textContent = data.lastMessage || '...';
+    if (!isActive) {
+        chatTitleElement.textContent = 'Bot desativado';
+        lastMessageElement.textContent = '';
+    } else {
+        chatTitleElement.textContent = data.chatTitle || '...';
+        lastMessageElement.textContent = data.lastMessage || '...';
+    }
 
     toggleButton.textContent = isActive ? 'Bot OFF' : 'Bot ON';
 }

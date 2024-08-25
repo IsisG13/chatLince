@@ -93,7 +93,7 @@ function updateIframe() {
 // Função para ativar o bot ao mudar de chat
 function activateBotOnChatChange() {
     isActive = true;
-    checkBotState();
+    checkBotState(); // Verifica o estado do bot ao mudar de chat
     updateIframe();
 }
 
@@ -104,22 +104,11 @@ const chatObserver = new MutationObserver((mutationsList, observer) => {
             // Aguarda um pequeno intervalo para garantir que o DOM foi atualizado
             setTimeout(() => {
                 activateBotOnChatChange();
-            }, 1000); // 1 segundo de delay
+            }, 1000);
             break;
         }
     }
 });
-
-// Iniciar observação de mudanças no chat
-function startChatObserver() {
-    const chatList = document.querySelector('#pane-side');
-    if (chatList) {
-        chatObserver.observe(chatList, { childList: true, subtree: true });
-    } else {
-        // Tenta novamente após um tempo se o chatList não estiver disponível
-        setTimeout(startChatObserver, 1000);
-    }
-}
 
 // Listener para mensagens recebidas do iframe
 window.addEventListener('message', (event) => {
@@ -146,6 +135,17 @@ const messageObserver = new MutationObserver((mutationsList, observer) => {
         }
     }
 });
+
+// Iniciar observação de mudanças no chat
+function startChatObserver() {
+    const chatList = document.querySelector('#pane-side');
+    if (chatList) {
+        chatObserver.observe(chatList, { childList: true, subtree: true });
+    } else {
+        // Tenta novamente após um tempo se o chatList não estiver disponível
+        setTimeout(startChatObserver, 1000);
+    }
+}
 
 // Iniciar observação de novas mensagens
 function startMessageObserver() {
