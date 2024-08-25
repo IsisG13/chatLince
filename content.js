@@ -29,8 +29,38 @@ function injectIframe() {
     return iframe;
 }
 
+// Função para adicionar/remover eventos de mouse em mensagens  
+function addMouseListeners() {
+    const messages = document.querySelectorAll('div.message-in, div.message-out');
+
+    messages.forEach(message => {
+        message.addEventListener('mouseover', () => {
+            if (isActive) {
+                observer.disconnect(); // Desconecta o observador ao passar o mouse  
+            }
+        });
+
+        message.addEventListener('mouseout', () => {
+            if (isActive) {
+                observer.observe(document.body, { childList: true, subtree: true }); // Reativa a observação  
+            }
+        });
+    });
+}
+
+// Função para verificar o estado do bot com base no chat atual
+function checkBotState() {
+    const chatId = getChatId();
+    if (chatId) {
+        const storedState = localStorage.getItem(`botState-${chatId}`);
+        isActive = storedState !== 'false'; // Se não estiver armazenado, o padrão é 'true'
+    } else {
+        isActive = true;
+    }
+}
+
 // Função para obter o nome do contato da conversa atual
-function getPhoneNumber() {
+function getChatId() {
     const headerTitle = document.querySelector('header span[dir="auto"]'); // Seletor para o nome do contato
     return headerTitle ? headerTitle.textContent : '...'; // Retorna o nome do contato ou '...'
 }
@@ -53,7 +83,7 @@ function updateIframe() {
     const data = {
         type: 'update',
         isActive: isActive,
-        chatTitle: getPhoneNumber(),
+        chatTitle: getChatId(),
         lastMessage: getLastMessage()
     };
 
@@ -63,6 +93,7 @@ function updateIframe() {
 // Função para ativar o bot ao mudar de chat
 function activateBotOnChatChange() {
     isActive = true;
+    checkBotState();
     updateIframe();
 }
 
@@ -94,6 +125,10 @@ function startChatObserver() {
 window.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'toggle') {
         isActive = event.data.isActive;
+        const chatId = getChatId();
+        if (chatId) {
+            localStorage.setItem(`botState-${chatId}`, isActive); // Armazena o estado do bot para o chat atual
+        }
         updateIframe();
     }
 });
@@ -133,4 +168,7 @@ window.addEventListener('load', () => {
     updateIframe();
     startChatObserver();
     startMessageObserver();
+    
+    // Chamar a função para adicionar eventos de mouse  
+    addMouseListeners();
 });

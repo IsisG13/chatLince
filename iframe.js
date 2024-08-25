@@ -1,5 +1,3 @@
-// iframe.js
-
 let isActive = true; // Estado inicial do bot
 
 // Atualiza a interface do iframe com as informações fornecidas
@@ -17,7 +15,7 @@ function updateUI(data) {
     chatTitleElement.textContent = data.chatTitle || '...';
     lastMessageElement.textContent = data.lastMessage || '...';
 
-    toggleButton.textContent = isActive ? 'Bot OFF' : ' Bot ON';
+    toggleButton.textContent = isActive ? 'Bot OFF' : 'Bot ON';
 }
 
 // Envia uma mensagem para o content script para alterar o estado do bot
