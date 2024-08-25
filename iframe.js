@@ -9,11 +9,11 @@ function updateUI(data) {
 
     isActive = data.isActive;
 
-    statusIndicator.textContent = isActive ? 'Bot ON' : 'Bot OFF';
+    statusIndicator.textContent = isActive ? 'Bot ON' : `Bot desativado para: ${data.chatTitle}`;
     statusIndicator.style.color = isActive ? 'green' : 'red';
 
     if (!isActive) {
-        chatTitleElement.textContent = 'Bot desativado';
+        chatTitleElement.textContent = '';
         lastMessageElement.textContent = '';
     } else {
         chatTitleElement.textContent = data.chatTitle || '...';
