@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,17 +12,52 @@
             margin: 0;
             background-color: #f0f0f0;
         }
+
+        #token-request label {
+            text-align: center;
+            font-weight: bold;
+            font-size: 175%;
+            margin-top: 15%;
+        }
+
+        #token-input {
+            padding: 4%;
+            height: 23px;
+            border-radius: 5px;
+            border: 1px solid gray;
+            margin: 6% 0 4% 0;
+        }
+
+        #submit-token {
+            font-size: 16px;
+            background-color: #128C7E;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 40px;
+        }
+
+        #token-request {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
         #status-indicator {
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
         #chat-info {
             margin-bottom: 20px;
         }
+
         #chat-info p {
             margin: 5px 0;
         }
+
         #toggle-button {
             padding: 10px 20px;
             font-size: 16px;
@@ -31,18 +67,34 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         #toggle-button:hover {
             background-color: #075E54;
         }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            display: none;
+            /* Inicialmente escondido */
+        }
     </style>
 </head>
+
 <body>
-    <div id="status-indicator">ON</div>
-    <div id="chat-info">
+    <div id="token-request">
+        <label for="token-input">Digite seu token:</label>
+        <input type="text" id="token-input" placeholder="Ex.token: testtoken_00 "/>
+        <button id="submit-token">Enviar</button>
+        <div id="error-message" class="error-message">Token inválido! Por favor, insira um token válido.</div>
+    </div>
+    <div id="status-indicator" style="display:none;">ON</div>
+    <div id="chat-info" style="display:none;">
         <p><strong>Contato:</strong> <span id="chat-title">...</span></p>
     </div>
-    <button id="toggle-button">Bot OFF</button>
+    <button id="toggle-button" style="display:none;">Bot OFF</button>
 
     <script src="iframe.js"></script>
 </body>
+
 </html>
