@@ -6,10 +6,22 @@ body {
 }
 
 #token-request label {
+  margin-left: 13%;
+  width: 70%;
   text-align: center;
   font-weight: bold;
   font-size: 175%;
   margin-top: 15%;
+}
+
+#token-request img {
+  width: 57%;
+  margin-left: 17%;
+  margin-top: 18%;
+}
+
+#logo-bot {
+  width: 46%;
 }
 
 #token-input {
@@ -22,7 +34,8 @@ body {
 
 #submit-token {
   font-size: 16px;
-  background-color: #128C7E;
+  font-weight: bold;
+  background-color: #751DCA;
   color: white;
   border: none;
   border-radius: 5px;
@@ -30,8 +43,70 @@ body {
   height: 40px;
 }
 
-#submit-token:hover {
-  background-color: #0f7569;
+.switch, 
+.switch2 {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-bottom: 12%;
+}
+
+.switch input, 
+.switch2 input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider,
+.slider2 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #999999;
+  /* Cor quando OFF */
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before, 
+.slider2::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #28C76F;
+  /* Cor quando ON */
+}
+
+input:checked+.slider2 {
+  background-color: #A14FFF;
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+input:checked+.slider2:before {
+  transform: translateX(26px);
+}
+
+#submit-token:hover,
+#toggle-button:hover, 
+#toggle-button2:hover {
+  background-color: #511788;
 }
 
 #token-request {
@@ -41,31 +116,27 @@ body {
 }
 
 #status-indicator {
-  font-size: 24px;
+  margin-left: 35%;
+  width: 70%;
+  font-size: 82%;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 4%;
 }
 
 #chat-info {
-  margin-bottom: 20px;
+  margin-bottom: 8px;
+  /* grid-template-columns: 16% 79% 5%; */
+  align-items: center;
 }
 
 #chat-info p {
   margin: 5px 0;
+  font-size: 86%;
 }
 
-#toggle-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #128C7E;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#toggle-button:hover {
-  background-color: #075E54;
+#chat-info a {
+  text-decoration: none;
+  font-size: 86%;
 }
 
 .error-message {
@@ -73,4 +144,15 @@ body {
   margin-top: 5px;
   display: none;
   /* Inicialmente escondido */
+}
+
+#HR, #Hr, #hr {
+  display: block;
+  /* border-color: white; */
+  border: 1px solid gainsboro;
+}
+
+#pBot, #pBot2 {
+  margin-top: -16%;
+  margin-left: 13%;
 }

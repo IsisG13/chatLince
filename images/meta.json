@@ -1,0 +1,22 @@
+{
+    "client_meta": {
+        "background_color": {
+            "r": 0.4583333432674408,
+            "g": 0.4583333432674408,
+            "b": 0.4583333432674408,
+            "a": 1
+        },
+        "thumbnail_size": {
+            "width": 400,
+            "height": 269
+        },
+        "render_coordinates": {
+            "x": -968,
+            "y": -651,
+            "width": 1935,
+            "height": 1302
+        }
+    },
+    "file_name": "Extensao",
+    "developer_related_links": []
+}

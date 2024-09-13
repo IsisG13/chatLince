@@ -1,27 +1,79 @@
+<!-- IFRAME.HTML -->
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bot WhatsApp</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-    <div id="token-request">
-        <label for="token-input">Digite seu token:</label>
-        <input type="text" id="token-input" placeholder="Ex.token: testtoken_00 "/>
-        <button id="submit-token">Enviar</button>
-        <div id="error-message" class="error-message">Token inválido! Por favor, insira um token válido.</div>
-    </div>
-    <div id="status-indicator" style="display:none;">ON</div>
-    <div id="chat-info" style="display:none;">
-        <p><strong>Contato:</strong> <span id="chat-title">...</span></p>
-    </div>
-    <button id="toggle-button" style="display:none;">Bot OFF</button>
-
     <script src="iframe.js"></script>
-</body>
+</head>
+<body>
+    <!-- Solicitação do Token -->
+    <div id="token-request">
+        <img alt="Logo da Prefiro delivery" src="images/logoPrefiroDelivery.png">
+        <label for="token-input">Digite seu token para entrar no LinceChat:</label>
+        <input type="text" id="token-input" placeholder="Ex. token: lincedelivery_1234" />
+        <button id="submit-token">Enviar</button>
+        <div id="error-message" class="error-message" style="display: none;">Token inválido! Por favor, insira um token válido.</div>
+    </div>
 
+    <!-- Informações do Chat -->
+    <div id="chat-info" style="display: none;">
+        <div id="status-indicator" style="display: none;">ON</div>
+        <img id="logo-bot" alt="Logo da Prefiro Delivery" src="images/logoPrefiroDelivery.png">
+    </div>
+
+    <!-- Controles do Bot -->
+    <div class="bot">
+        <div>
+            <label class="switch" id="button" style="display: none;">
+                <input type="checkbox" id="toggle-button">
+                <span class="slider"></span>
+            </label>
+            <p id="pBot" style="display: none;">Sistema de ChatBot</p>
+        </div>
+    </div>
+    <hr id="HR" style="display: none;" />
+
+    <!-- Conteúdo do Contato -->
+    <div id="dados-usuarios" style="display: none;">
+        <div id="conteudo-contato" style="display: none;">
+            <p class="status">Cliente não cadastrado!</p>
+            <p><strong><span id="chat-title" style="display: none;">...</span></strong></p>
+            <p id="phone-number" style="display: none;">Número não disponível</p>
+            <p><span id="nome"></span></p>
+            <p><span id="email"></span></p>
+            <p><span id="numero_telefone"></span></p>
+            <p>Cliente desde <span id="ano_inicio_cliente"></span></p>
+
+            <div>
+                <label class="switch2" id="button2" style="display: none;">
+                    <input type="checkbox" id="toggle-button2">
+                    <span class="slider2"></span>
+                </label>
+                <p id="pBot2" style="display: none;">ChatBot</p>
+            </div>
+        </div>
+        <hr id="Hr" style="display: none;" />
+
+        <!-- Pedidos Recentes -->
+        <div id="pPedidos" style="display: none;">
+            <p><strong>Pedidos Recentes</strong></p>
+            <p><span id="data"></span></p>
+            <p><span id="hora"></span></p>
+            <p><span id="endereco"></span></p>
+            <p>R$ <span id="preco"></span></p>
+        </div>
+        <hr id="hr" style="display: none;" />
+
+        <!-- Itens mais pedidos -->
+        <div id="pItens" style="display: none;">
+            <p><strong>Itens mais pedidos</strong></p>
+            <img alt="Imagem pedido" id="img">
+            <p><span id="pedido"></span></p>
+            <p>R$ <span id="precoPedido"></span></p>
+        </div>
+    </div>
+</body>
 </html>

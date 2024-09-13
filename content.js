@@ -1,31 +1,108 @@
+// CONTENT.JS
 let isActive = true; // Estado inicial do bot
+
+// Função para obter o número de telefone ao abrir um chat
+function obterNumeroTelefone() {
+    var amieElement = document.querySelector('._amie');
+    if (amieElement) {
+        amieElement.click();
+
+        setTimeout(function () {
+            var phoneNumberElement = document.querySelector('.x1jchvi3.x1fcty0u.x40yjcy');
+            if (phoneNumberElement) {
+                var phoneNumber = phoneNumberElement.textContent; // Obtém o número de telefone
+                console.log('Número de telefone:', phoneNumber);
+
+                // Salva o número de telefone no localStorage
+                localStorage.setItem('numeroTelefoneAtual', phoneNumber);
+
+                // Envia o número de telefone para o iframe
+                const iframe = document.getElementById('my-custom-iframe');
+                if (iframe) {
+                    iframe.contentWindow.postMessage({
+                        type: 'update',
+                        isActive: isActive,
+                        chatTitle: getChatId(),
+                        phoneNumber: phoneNumber
+                    }, '*');
+                }
+            } else {
+                console.log('Elemento do número de telefone não encontrado.');
+            }
+        }, 500);
+    } else {
+        console.log('Elemento com a classe ._amie não encontrado.');
+    }
+}
+
+// function obterNumeroTelefone() {
+//     var amieElement = document.querySelector('._amie');
+//     if (amieElement) {
+//         amieElement.click();
+
+//         setTimeout(function () {
+//             var phoneNumberElement = document.querySelector('.x1jchvi3.x1fcty0u.x40yjcy');
+//             if (phoneNumberElement) {
+//                 var phoneNumber = phoneNumberElement.textContent; // Obtém o número de telefone
+//                 console.log('Número de telefone:', phoneNumber);
+
+//                 // Envia o número de telefone para o iframe
+//                 const iframe = document.getElementById('my-custom-iframe');
+//                 if (iframe) {
+//                     iframe.contentWindow.postMessage({
+//                         type: 'update',
+//                         isActive: isActive,
+//                         chatTitle: getChatId(),
+//                         phoneNumber: phoneNumber
+//                     }, '*');
+//                 }
+//             } else {
+//                 console.log('Elemento do número de telefone não encontrado.');
+//             }
+//         }, 500);
+//     } else {
+//         console.log('Elemento com a classe ._amie não encontrado.');
+//     }
+// }
 
 // Função para injetar o iframe
 function injectIframe() {
     const existingIframe = document.getElementById('my-custom-iframe');
-    if (existingIframe) return existingIframe; // Evita injetar múltiplos iframes
+    if (existingIframe) return existingIframe;
 
     const appElement = document.getElementById('app');
     if (appElement) {
-        appElement.style.width = '75%'; // Ajusta a largura do aplicativo
+        appElement.style.width = '75%';
     }
 
     const iframe = document.createElement('iframe');
     iframe.id = 'my-custom-iframe';
-    iframe.src = chrome.runtime.getURL('iframe.html'); // Define a fonte do iframe
-    iframe.style.width = '25%';
-    iframe.style.height = '100%';
-    iframe.style.background = 'white';
-    iframe.style.zIndex = '2000';
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.top = '0';
-    iframe.style.border = 'none';
-    iframe.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
-    document.body.appendChild(iframe); // Adiciona o iframe ao corpo do documento
+    iframe.src = chrome.runtime.getURL('iframe.html');
+    iframe.style.cssText = `
+        position: absolute;
+        width: 25%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: 1000;
+        border: none;
+        background-color: #fff;
+    `;
+
+    iframe.addEventListener('load', function () {
+        console.log('iFrame carregado.');
+        iframe.contentWindow.postMessage({
+            type: 'update',
+            isActive: isActive,
+            chatTitle: getChatId()
+        }, '*');
+    });
+
+    document.body.appendChild(iframe);
 
     return iframe;
 }
+
 
 // Função para verificar o estado do bot com base no chat atual
 function checkBotState() {
@@ -40,9 +117,17 @@ function checkBotState() {
 
 // Função para obter o nome do contato da conversa atual
 function getChatId() {
-    const headerTitle = document.querySelector('header span[dir="auto"]'); // Seletor para o nome do contato
-    return headerTitle ? headerTitle.textContent : '...'; // Retorna o nome do contato ou '...'
+    const selectedChat = document.querySelector('.x1lliihq .x1ey2m1c');
+    return selectedChat ? selectedChat.textContent.trim() : 'Nome do Contato';
 }
+
+setTimeout(() => {
+    injectIframe();
+}, 2000);
+
+setInterval(() => {
+    obterNumeroTelefone();
+}, 2000);
 
 // Função para atualizar o iframe com as informações atuais
 function updateIframe() {
@@ -63,17 +148,21 @@ function activateBotOnChatChange() {
     isActive = true;
     checkBotState(); // Verifica o estado do bot ao mudar de chat
     updateIframe();
+    obterNumeroTelefone(); // Atualiza o número de telefone ao mudar de chat
 }
 
 // Observador para detectar mudanças de chat
 const chatObserver = new MutationObserver((mutationsList, observer) => {
     for (let mutation of mutationsList) {
         if (mutation.type === 'childList') {
-            // Aguarda um pequeno intervalo para garantir que o DOM foi atualizado
-            setTimeout(() => {
-                activateBotOnChatChange();
-            }, 1000);
-            break;
+            // Verifica se a mudança é na lista de chats, indicando uma mudança de chat
+            if (mutation.target && mutation.target.closest('#pane-side')) {
+                // Aguarda um pequeno intervalo para garantir que o DOM foi atualizado
+                setTimeout(() => {
+                    activateBotOnChatChange();
+                }, 1000);
+                break;
+            }
         }
     }
 });
@@ -103,8 +192,8 @@ function startChatObserver() {
 
 // Inicialização ao carregar a página
 window.addEventListener('load', () => {
+    obterNumeroTelefone();
     injectIframe();
     updateIframe();
     startChatObserver();
 });
-
