@@ -35,36 +35,6 @@ function obterNumeroTelefone() {
     }
 }
 
-// function obterNumeroTelefone() {
-//     var amieElement = document.querySelector('._amie');
-//     if (amieElement) {
-//         amieElement.click();
-
-//         setTimeout(function () {
-//             var phoneNumberElement = document.querySelector('.x1jchvi3.x1fcty0u.x40yjcy');
-//             if (phoneNumberElement) {
-//                 var phoneNumber = phoneNumberElement.textContent; // Obtém o número de telefone
-//                 console.log('Número de telefone:', phoneNumber);
-
-//                 // Envia o número de telefone para o iframe
-//                 const iframe = document.getElementById('my-custom-iframe');
-//                 if (iframe) {
-//                     iframe.contentWindow.postMessage({
-//                         type: 'update',
-//                         isActive: isActive,
-//                         chatTitle: getChatId(),
-//                         phoneNumber: phoneNumber
-//                     }, '*');
-//                 }
-//             } else {
-//                 console.log('Elemento do número de telefone não encontrado.');
-//             }
-//         }, 500);
-//     } else {
-//         console.log('Elemento com a classe ._amie não encontrado.');
-//     }
-// }
-
 // Função para injetar o iframe
 function injectIframe() {
     const existingIframe = document.getElementById('my-custom-iframe');
@@ -138,6 +108,7 @@ function updateIframe() {
         type: 'update',
         isActive: isActive,
         chatTitle: getChatId(),
+        phoneNumber: localStorage.getItem('numeroTelefoneAtual')
     };
 
     iframe.contentWindow.postMessage(data, '*');

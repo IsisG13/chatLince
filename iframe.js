@@ -109,9 +109,11 @@ async function carregarDados() {
 
             // Exibe o conteúdo de contato
             document.getElementById('dados-usuarios').style.display = 'block';
+            document.querySelector('.status').innerText = '';
         } else {
-            // Se o contato não for encontrado, esconde o conteúdo
-            document.getElementById('dados-usuarios').style.display = 'none';
+            // Se o contato não for encontrado, mostra mensagem de cliente não cadastrado
+            document.querySelector('.status').innerText = 'Cliente não cadastrado!';
+            document.getElementById('dados-usuarios').style.display = 'block';
         }
     } catch (error) {
         console.error('Erro ao carregar dados JSON:', error);
@@ -121,16 +123,6 @@ async function carregarDados() {
 // Chama a função ao carregar a página
 window.addEventListener('load', () => {
     carregarDados();
-
-    const submitTokenButton = document.getElementById('submit-token');
-    submitTokenButton.addEventListener('click', handleTokenSubmit);
-});
-
-
-// Listener para o botão de envio do token  
-window.addEventListener('load', () => {
-    const toggleButton = document.getElementById('toggle-button');
-    toggleButton.addEventListener('click', toggleBot);
 
     const submitTokenButton = document.getElementById('submit-token');
     submitTokenButton.addEventListener('click', handleTokenSubmit);
