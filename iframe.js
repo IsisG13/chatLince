@@ -6,11 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('toggle-button');
 
     toggleButton.addEventListener('change', () => {
-        isActive = toggleButton.checked; // Define o estado com base no checkbox
+        isActive = toggleButton.checked;
         updateUI({ isActive: isActive, chatTitle: document.getElementById('chat-title').textContent });
         window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
-
-        carregarDados(); // Carrega os dados JSON assim que o documento estiver pronto
     });
 });
 
@@ -27,15 +25,16 @@ function updateUI(data) {
 
     chatTitleElement.textContent = isActive ? data.chatTitle || '...' : '';
 
-    // Atualiza o número de telefone, se fornecido
     if (data.phoneNumber) {
         phoneNumberElement.textContent = data.phoneNumber;
-        phoneNumberElement.style.display = 'block'; // Torna o número de telefone visível
+        phoneNumberElement.style.display = 'block';
     } else {
-        phoneNumberElement.style.display = 'none'; // Esconde se não houver número
+        phoneNumberElement.style.display = 'none';
     }
 
-    toggleButton.checked = isActive; // Atualiza o estado do toggle switch
+    toggleButton.checked = isActive;
+
+    carregarDados(data.phoneNumber);
 }
 
 function toggleBot() {
@@ -49,7 +48,6 @@ function handleTokenSubmit() {
     const errorMessage = document.getElementById('error-message');
 
     if (validateToken(token)) {
-        // Token válido: Oculta a solicitação de token e exibe os elementos necessários
         errorMessage.style.display = 'none';
         document.getElementById('token-request').style.display = 'none';
         document.getElementById('status-indicator').style.display = 'block';
@@ -68,10 +66,8 @@ function handleTokenSubmit() {
         document.getElementById('pItens').style.display = 'block';
         document.getElementById('dados-usuarios').style.display = 'block';
 
-        // Envia uma mensagem para o content script que o token foi validado
         window.parent.postMessage({ type: 'update', isActive: true, chatTitle: 'Nome do Contato' }, '*');
     } else {
-        // Token inválido: exibe a mensagem de erro
         errorMessage.style.display = 'block';
     }
 }
@@ -82,20 +78,14 @@ function validateToken(token) {
     return token === 'lincedelivery_1234';
 }
 
-async function carregarDados() {
+async function carregarDados(telefone) {
     try {
-        // Faz a requisição para carregar o JSON
         const response = await fetch('clientes.json');
         const data = await response.json();
 
-        // Obtém o número de telefone armazenado no localStorage
-        const telefone = localStorage.getItem('numeroTelefoneAtual');
-
-        // Encontra o contato correspondente no JSON
         const contato = data.usuarios.find(usuario => usuario.numero_telefone === telefone);
 
         if (contato) {
-            // Preenche os dados no HTML
             document.getElementById('nome').innerText = contato.nome;
             document.getElementById('email').innerText = contato.email;
             document.getElementById('numero_telefone').innerText = contato.numero_telefone;
@@ -107,13 +97,16 @@ async function carregarDados() {
             document.getElementById('pedido').innerText = contato.pedido;
             document.getElementById('precoPedido').innerText = contato.precoPedido;
 
-            // Exibe o conteúdo de contato
             document.getElementById('dados-usuarios').style.display = 'block';
             document.querySelector('.status').innerText = '';
         } else {
-            // Se o contato não for encontrado, mostra mensagem de cliente não cadastrado
             document.querySelector('.status').innerText = 'Cliente não cadastrado!';
             document.getElementById('dados-usuarios').style.display = 'block';
+            
+            // Limpa os campos quando o cliente não é encontrado
+            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido'].forEach(id => {
+                document.getElementById(id).innerText = '';
+            });
         }
     } catch (error) {
         console.error('Erro ao carregar dados JSON:', error);
@@ -122,8 +115,6 @@ async function carregarDados() {
 
 // Chama a função ao carregar a página
 window.addEventListener('load', () => {
-    carregarDados();
-
     const submitTokenButton = document.getElementById('submit-token');
     submitTokenButton.addEventListener('click', handleTokenSubmit);
 });
