@@ -11,7 +11,23 @@
       "preco": "250",
       "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
       "pedido": "Açai",
-      "precoPedido": "25,50"
+      "precoPedido": "25,50",
+
+      "data2": "27/07/2024",
+      "hora2": "14:20",
+      "endereco2": "Rua Arizona, 46",
+      "preco2": "250",
+      "img2": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido2": "Açai",
+      "precoPedido2": "25,50",
+
+      "data3": "27/07/2024",
+      "hora3": "14:20",
+      "endereco3": "Rua Arizona, 46",
+      "preco3": "250",
+      "img3": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido3": "Açai",
+      "precoPedido3": "25,50"
     },
     {
       "numero_telefone": "+55 75 9191-8008",
@@ -24,7 +40,23 @@
       "preco": "1230",
       "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
       "pedido": "Sushi",
-      "precoPedido": "150,25"
+      "precoPedido": "150,25",
+
+      "data2": "12/09/2024",
+      "hora2": "15:04:20",
+      "endereco2": "Av. Getúlio Vargas, 2596",
+      "preco2": "1230",
+      "img2": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido2": "Sushi",
+      "precoPedido2": "150,25",
+
+      "data3": "12/09/2024",
+      "hora3": "15:04:20",
+      "endereco3": "Av. Getúlio Vargas, 2596",
+      "preco3": "1230",
+      "img3": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido3": "Sushi",
+      "precoPedido3": "150,25"
     },
     {
       "numero_telefone": "+55 75 9241-9101",
@@ -32,103 +64,28 @@
       "email": "paulo@teste.com",
       "ano_inicio_cliente": 2014,
       "data": "31/07/2024",
-      "hora": "-9:53",
+      "hora": "09:53",
       "endereco": "Av. Getúlio Vargas, 2596",
       "preco": "340",
       "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
       "pedido": "X-bacon",
-      "precoPedido": "95.00"
-    },
-    {
-      "numero_telefone": "+55 41 3456-7890",
-      "nome": "Ana Costa",
-      "email": "ana.costa@example.com",
-      "ano_inicio_cliente": 2021,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 61 4567-8901",
-      "nome": "Fernanda Souza",
-      "email": "fernanda.souza@example.com",
-      "ano_inicio_cliente": 2019,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 71 5678-9012",
-      "nome": "Roberto Lima",
-      "email": "roberto.lima@example.com",
-      "ano_inicio_cliente": 2017,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 81 9789-0123",
-      "nome": "Patrícia Alves",
-      "email": "patricia.alves@example.com",
-      "ano_inicio_cliente": 2016,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 91 7890-1234",
-      "nome": "Lucas Martins",
-      "email": "lucas.martins@example.com",
-      "ano_inicio_cliente": 2022,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 51 8901-2345",
-      "nome": "Cláudia Ramos",
-      "email": "claudia.ramos@example.com",
-      "ano_inicio_cliente": 2013,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
-    },
-    {
-      "numero_telefone": "+55 62 9012-3456",
-      "nome": "Guilherme Ferreira",
-      "email": "guilherme.ferreira@example.com",
-      "ano_inicio_cliente": 2014,
-      "data": "27/07/2024",
-      "hora": "14:20",
-      "endereco": "Rua Arizona, 46",
-      "preco": "250",
-      "img": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
-      "pedido": "Açai",
-      "precoPedido": "25,50"
+      "precoPedido": "95.00",
+
+      "data2": "31/07/2024",
+      "hora2": "09:53",
+      "endereco2": "Av. Getúlio Vargas, 2596",
+      "preco2": "340",
+      "img2": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido2": "X-bacon",
+      "precoPedido2": "95.00",
+
+      "data3": "31/07/2024",
+      "hora3": "09:53",
+      "endereco3": "Av. Getúlio Vargas, 2596",
+      "preco3": "340",
+      "img3": "/images/05469d11ec75ecd67642979df7343f9d50989135.png",
+      "pedido3": "X-bacon",
+      "precoPedido3": "95.00"
     }
   ]
 }

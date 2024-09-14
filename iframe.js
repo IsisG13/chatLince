@@ -24,7 +24,6 @@ function updateUI(data) {
     statusIndicator.style.color = isActive ? 'green' : 'red';
 
     chatTitleElement.textContent = isActive ? data.chatTitle || '...' : '';
-
     if (data.phoneNumber) {
         phoneNumberElement.textContent = data.phoneNumber;
         phoneNumberElement.style.display = 'block';
@@ -91,20 +90,37 @@ async function carregarDados(telefone) {
             document.getElementById('numero_telefone').innerText = contato.numero_telefone;
             document.getElementById('ano_inicio_cliente').innerText = contato.ano_inicio_cliente;
             document.getElementById('data').innerText = contato.data;
+            document.getElementById('data2').innerText = contato.data2;
+            document.getElementById('data3').innerText = contato.data3;
+
             document.getElementById('hora').innerText = contato.hora;
+            document.getElementById('hora2').innerText = contato.hora2;
+            document.getElementById('hora3').innerText = contato.hora3;
+
             document.getElementById('endereco').innerText = contato.endereco;
+            document.getElementById('endereco2').innerText = contato.endereco2;
+            document.getElementById('endereco3').innerText = contato.endereco3;
+
             document.getElementById('preco').innerText = contato.preco;
+            document.getElementById('preco2').innerText = contato.preco2;
+            document.getElementById('preco3').innerText = contato.preco3;
+
             document.getElementById('pedido').innerText = contato.pedido;
+            document.getElementById('pedido2').innerText = contato.pedido2;
+            document.getElementById('pedido3').innerText = contato.pedido3;
+
             document.getElementById('precoPedido').innerText = contato.precoPedido;
+            document.getElementById('precoPedido2').innerText = contato.precoPedido2;
+            document.getElementById('precoPedido3').innerText = contato.precoPedido3;
 
             document.getElementById('dados-usuarios').style.display = 'block';
             document.querySelector('.status').innerText = '';
         } else {
             document.querySelector('.status').innerText = 'Cliente não cadastrado!';
             document.getElementById('dados-usuarios').style.display = 'block';
-            
+
             // Limpa os campos quando o cliente não é encontrado
-            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido'].forEach(id => {
+            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido', 'data2', 'hora2', 'endereco2', 'preco2', 'pedido2', 'precoPedido2', 'data3', 'hora3', 'endereco3', 'preco3', 'pedido3', 'precoPedido3'].forEach(id => {
                 document.getElementById(id).innerText = '';
             });
         }

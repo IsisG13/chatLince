@@ -26,12 +26,13 @@
 
     <!-- Controles do Bot -->
     <div class="bot">
+        <!-- BOTAO BOT GLOBAL  -->
         <div>
             <label class="switch" id="button" style="display: none;">
                 <input type="checkbox" id="toggle-button">
                 <span class="slider"></span>
             </label>
-            <p id="pBot" style="display: none;">Sistema de ChatBot</p>
+            <p id="pBot" style="display: none;">ChatBot</p>
         </div>
     </div>
     <hr id="HR" style="display: none;" />
@@ -47,23 +48,41 @@
             <p><span id="numero_telefone"></span></p>
             <p>Cliente desde <span id="ano_inicio_cliente"></span></p>
 
+            <!-- BOTAO BOT INDIVIDUAL -->
             <div>
                 <label class="switch2" id="button2" style="display: none;">
                     <input type="checkbox" id="toggle-button2">
                     <span class="slider2"></span>
                 </label>
-                <p id="pBot2" style="display: none;">ChatBot</p>
+                <p id="pBot2" style="display: none;">Sistema de ChatBot</p>
             </div>
-        </div>
         <hr id="Hr" style="display: none;" />
 
         <!-- Pedidos Recentes -->
         <div id="pPedidos" style="display: none;">
             <p><strong>Pedidos Recentes</strong></p>
-            <p><span id="data"></span></p>
-            <p><span id="hora"></span></p>
+            <div class="DT">
+                <p><span id="data"></span></p> <br />
+                <p class="hora"> <span id="hora"></span></p>
+            </div>
             <p><span id="endereco"></span></p>
             <p>R$ <span id="preco"></span></p>
+            <hr/>
+
+            <div class="DT">
+                <p><span id="data2"></span></p> <br />
+                <p class="hora"> <span id="hora2"></span></p>
+            </div>
+            <p><span id="endereco2"></span></p>
+            <p>R$ <span id="preco2"></span></p>
+            <hr/>
+
+            <div class="DT">
+                <p><span id="data3"></span></p> <br /> 
+                <p class="hora"> <span id="hora3"></span></p>
+            </div>
+            <p><span id="endereco3"></span></p>
+            <p>R$ <span id="preco3"></span></p>
         </div>
         <hr id="hr" style="display: none;" />
 
@@ -73,6 +92,14 @@
             <!-- <img alt="Imagem pedido" id="img"> -->
             <p><span id="pedido"></span></p>
             <p>R$ <span id="precoPedido"></span></p>
+            <hr/>
+
+            <p><span id="pedido2"></span></p>
+            <p>R$ <span id="precoPedido2"></span></p>
+            <hr/>
+
+            <p><span id="pedido3"></span></p>
+            <p>R$ <span id="precoPedido3"></span></p>
         </div>
     </div>
 </body>

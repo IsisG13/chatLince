@@ -3,6 +3,8 @@ let isActive = true; // Estado inicial do bot
 
 // Função para obter o número de telefone ao abrir um chat
 function obterNumeroTelefone() {
+    if (!isActive) return; // Verifica se o bot está ativo
+
     var amieElement = document.querySelector('._amie');
     if (amieElement) {
         amieElement.click();
@@ -13,10 +15,8 @@ function obterNumeroTelefone() {
                 var phoneNumber = phoneNumberElement.textContent; // Obtém o número de telefone
                 console.log('Número de telefone:', phoneNumber);
 
-                // Salva o número de telefone no localStorage
                 localStorage.setItem('numeroTelefoneAtual', phoneNumber);
 
-                // Envia o número de telefone para o iframe
                 const iframe = document.getElementById('my-custom-iframe');
                 if (iframe) {
                     iframe.contentWindow.postMessage({
@@ -35,8 +35,11 @@ function obterNumeroTelefone() {
     }
 }
 
+
 // Função para injetar o iframe
 function injectIframe() {
+    if (!isActive) return; // Verifica se o bot está ativo
+
     const existingIframe = document.getElementById('my-custom-iframe');
     if (existingIframe) return existingIframe;
 
@@ -74,6 +77,7 @@ function injectIframe() {
 }
 
 
+
 // Função para verificar o estado do bot com base no chat atual
 function checkBotState() {
     const chatId = getChatId();
@@ -101,9 +105,9 @@ setInterval(() => {
 
 // Função para atualizar o iframe com as informações atuais
 function updateIframe() {
-    const iframe = document.getElementById('my-custom-iframe');
-    if (!iframe) return;
+    if (!isActive) return; // Verifica se o bot está ativo
 
+    const iframe = document.getElementById('my-custom-iframe');
     const data = {
         type: 'update',
         isActive: isActive,
@@ -146,9 +150,15 @@ window.addEventListener('message', (event) => {
         if (chatId) {
             localStorage.setItem(`botState-${chatId}`, isActive); // Armazena o estado do bot para o chat atual
         }
-        updateIframe();
+        updateIframe(); // Atualiza o iframe com o estado atual do bot
+
+        if (!isActive) {
+            // Se o bot estiver desativado, pare as funções
+            console.log("Bot está OFF. Todas as funções foram desativadas.");
+        }
     }
 });
+
 
 // Iniciar observação de mudanças no chat
 function startChatObserver() {

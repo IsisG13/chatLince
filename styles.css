@@ -156,3 +156,13 @@ input:checked+.slider2:before {
   margin-top: -16%;
   margin-left: 13%;
 }
+
+.DT {
+  display: flex;
+  align-items: center;
+  margin: -2% auto -4% 0%;
+}
+
+.hora{
+  margin-left: 3%;
+}
