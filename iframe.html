@@ -1,6 +1,7 @@
 <!-- IFRAME.HTML -->
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="iframe.js"></script>
 </head>
+
 <body>
     <!-- Solicitação do Token -->
     <div id="token-request">
@@ -15,7 +17,8 @@
         <label for="token-input">Digite seu token para entrar no LinceChat:</label>
         <input type="text" id="token-input" placeholder="Ex. token: lincedelivery_1234" />
         <button id="submit-token">Enviar</button>
-        <div id="error-message" class="error-message" style="display: none;">Token inválido! Por favor, insira um token válido.</div>
+        <div id="error-message" class="error-message" style="display: none;">Token inválido! Por favor, insira um token
+            válido.</div>
     </div>
 
     <!-- Informações do Chat -->
@@ -56,51 +59,66 @@
                 </label>
                 <p id="pBot2" style="display: none;">Sistema de ChatBot</p>
             </div>
-        <hr id="Hr" style="display: none;" />
+            <hr id="Hr" style="display: none;" />
 
-        <!-- Pedidos Recentes -->
-        <div id="pPedidos" style="display: none;">
-            <p><strong>Pedidos Recentes</strong></p>
-            <div class="DT">
-                <p><span id="data"></span></p> <br />
-                <p class="hora"> <span id="hora"></span></p>
-            </div>
-            <p><span id="endereco"></span></p>
-            <p>R$ <span id="preco"></span></p>
-            <hr/>
+            <!-- Pedidos Recentes -->
+            <div id="pPedidos" style="display: none;">
+                <p><strong>Pedidos Recentes</strong></p>
+                <div class="DT">
+                    <p><span id="data"></span></p> <br />
+                    <p class="hora"> <span id="hora"></span></p>
+                </div>
+                <p><span id="endereco"></span></p>
+                <p>R$ <span id="preco"></span></p>
+                <hr />
 
-            <div class="DT">
-                <p><span id="data2"></span></p> <br />
-                <p class="hora"> <span id="hora2"></span></p>
-            </div>
-            <p><span id="endereco2"></span></p>
-            <p>R$ <span id="preco2"></span></p>
-            <hr/>
+                <div class="DT">
+                    <p><span id="data2"></span></p> <br />
+                    <p class="hora"> <span id="hora2"></span></p>
+                </div>
+                <p><span id="endereco2"></span></p>
+                <p>R$ <span id="preco2"></span></p>
+                <hr />
 
-            <div class="DT">
-                <p><span id="data3"></span></p> <br /> 
-                <p class="hora"> <span id="hora3"></span></p>
+                <div class="DT">
+                    <p><span id="data3"></span></p> <br />
+                    <p class="hora"> <span id="hora3"></span></p>
+                </div>
+                <p><span id="endereco3"></span></p>
+                <p>R$ <span id="preco3"></span></p>
             </div>
-            <p><span id="endereco3"></span></p>
-            <p>R$ <span id="preco3"></span></p>
+            <hr id="hr" style="display: none;" />
+
+            <!-- Itens mais pedidos -->
+            <div id="pItens" style="display: none;">
+                <p><strong>Itens mais pedidos</strong></p>
+                <div class="CItens">
+                    <img alt="Imagem Pedido" id="img">
+                    <div class="dadosIMG">
+                        <p><span id="pedido"></span></p>
+                        <p>R$ <span id="precoPedido"></span></p>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="CItens">
+                    <img alt="Imagem Pedido2" id="img2">
+                    <div class="dadosIMG">
+                        <p><span id="pedido2"></span></p>
+                        <p>R$ <span id="precoPedido2"></span></p>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="CItens">
+                    <img alt="Imagem Pedido3" id="img3">
+                    <div class="dadosIMG">
+                        <p><span id="pedido3"></span></p>
+                        <p>R$ <span id="precoPedido3"></span></p>
+                    </div>
+                </div> 
+            </div>
         </div>
-        <hr id="hr" style="display: none;" />
-
-        <!-- Itens mais pedidos -->
-        <div id="pItens" style="display: none;">
-            <p><strong>Itens mais pedidos</strong></p>
-            <!-- <img alt="Imagem pedido" id="img"> -->
-            <p><span id="pedido"></span></p>
-            <p>R$ <span id="precoPedido"></span></p>
-            <hr/>
-
-            <p><span id="pedido2"></span></p>
-            <p>R$ <span id="precoPedido2"></span></p>
-            <hr/>
-
-            <p><span id="pedido3"></span></p>
-            <p>R$ <span id="precoPedido3"></span></p>
-        </div>
-    </div>
 </body>
+
 </html>

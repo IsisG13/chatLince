@@ -71,6 +71,7 @@ function handleTokenSubmit() {
     }
 }
 
+
 // Função de validação do token  
 function validateToken(token) {
     // Valida o token (aqui você pode definir a lógica real para a validação)
@@ -113,6 +114,10 @@ async function carregarDados(telefone) {
             document.getElementById('precoPedido2').innerText = contato.precoPedido2;
             document.getElementById('precoPedido3').innerText = contato.precoPedido3;
 
+            document.getElementById('img').src = contato.img;
+            document.getElementById('img2').src = contato.img2;
+            document.getElementById('img3').src = contato.img3;
+
             document.getElementById('dados-usuarios').style.display = 'block';
             document.querySelector('.status').innerText = '';
         } else {
@@ -120,7 +125,7 @@ async function carregarDados(telefone) {
             document.getElementById('dados-usuarios').style.display = 'block';
 
             // Limpa os campos quando o cliente não é encontrado
-            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido', 'data2', 'hora2', 'endereco2', 'preco2', 'pedido2', 'precoPedido2', 'data3', 'hora3', 'endereco3', 'preco3', 'pedido3', 'precoPedido3'].forEach(id => {
+            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido', 'img', 'data2', 'hora2', 'endereco2', 'preco2', 'pedido2', 'precoPedido2', 'img2', 'data3', 'hora3', 'endereco3', 'preco3', 'pedido3', 'precoPedido3', 'img3'].forEach(id => {
                 document.getElementById(id).innerText = '';
             });
         }

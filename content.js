@@ -1,5 +1,5 @@
-// CONTENT.JS
-let isActive = true; // Estado inicial do bot
+let isActive = true; // Estado global do bot
+const chatStates = {}; // Objeto para armazenar o estado do bot para chats específicos
 
 // Função para obter o número de telefone ao abrir um chat
 function obterNumeroTelefone() {
@@ -35,7 +35,6 @@ function obterNumeroTelefone() {
     }
 }
 
-
 // Função para injetar o iframe
 function injectIframe() {
     if (!isActive) return; // Verifica se o bot está ativo
@@ -51,16 +50,16 @@ function injectIframe() {
     const iframe = document.createElement('iframe');
     iframe.id = 'my-custom-iframe';
     iframe.src = chrome.runtime.getURL('iframe.html');
-    iframe.style.cssText = `
-        position: absolute;
-        width: 25%;
-        height: 100%;
-        top: 0;
-        right: 0;
-        z-index: 1000;
-        border: none;
-        background-color: #fff;
-    `;
+    iframe.style.cssText = 
+    `position: absolute;
+    width: 25%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    border: none;
+    background-color: #fff;`
+    ;
 
     iframe.addEventListener('load', function () {
         console.log('iFrame carregado.');
@@ -76,14 +75,11 @@ function injectIframe() {
     return iframe;
 }
 
-
-
 // Função para verificar o estado do bot com base no chat atual
 function checkBotState() {
     const chatId = getChatId();
     if (chatId) {
-        const storedState = localStorage.getItem(`botState-${chatId}`);
-        isActive = storedState !== 'false'; // Se não estiver armazenado, o padrão é 'true'
+        isActive = chatStates[chatId] !== false; // Se não estiver armazenado, o padrão é 'true'
     } else {
         isActive = true;
     }
@@ -91,8 +87,8 @@ function checkBotState() {
 
 // Função para obter o nome do contato da conversa atual
 function getChatId() {
-    const selectedChat = document.querySelector('.x1lliihq .x1ey2m1c');
-    return selectedChat ? selectedChat.textContent.trim() : 'Nome do Contato';
+    const headerTitle = document.querySelector('header span[dir="auto"]'); // Seletor para o nome do contato
+    return headerTitle ? headerTitle.textContent : '...'; // Retorna o nome do contato ou '...'
 }
 
 setTimeout(() => {
@@ -120,7 +116,6 @@ function updateIframe() {
 
 // Função para ativar o bot ao mudar de chat
 function activateBotOnChatChange() {
-    isActive = true;
     checkBotState(); // Verifica o estado do bot ao mudar de chat
     updateIframe();
     obterNumeroTelefone(); // Atualiza o número de telefone ao mudar de chat
@@ -148,7 +143,7 @@ window.addEventListener('message', (event) => {
         isActive = event.data.isActive;
         const chatId = getChatId();
         if (chatId) {
-            localStorage.setItem(`botState-${chatId}`, isActive); // Armazena o estado do bot para o chat atual
+            chatStates[chatId] = isActive; // Armazena o estado do bot para o chat atual
         }
         updateIframe(); // Atualiza o iframe com o estado atual do bot
 
@@ -158,7 +153,6 @@ window.addEventListener('message', (event) => {
         }
     }
 });
-
 
 // Iniciar observação de mudanças no chat
 function startChatObserver() {
