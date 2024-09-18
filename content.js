@@ -3,7 +3,7 @@ const chatStates = {}; // Objeto para armazenar o estado do bot para chats espec
 
 // Função para obter o número de telefone ao abrir um chat
 function obterNumeroTelefone() {
-    if (!isActive) return; // Verifica se o bot está ativo
+    if (!isActive) return; // Verifica se o bot global está ativo
 
     var amieElement = document.querySelector('._amie');
     if (amieElement) {

@@ -1,22 +1,30 @@
 // IFRAME.JS
-
 let isActive = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.getElementById('toggle-button');
+    const toggleButton2 = document.getElementById('toggle-button2');
 
     toggleButton.addEventListener('change', () => {
         isActive = toggleButton.checked;
         updateUI({ isActive: isActive, chatTitle: document.getElementById('chat-title').textContent });
         window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
     });
+
+    toggleButton2.addEventListener('change', () => {
+        const specificBotState = toggleButton2.checked;
+        updateUI({ isActive: specificBotState, chatTitle: document.getElementById('chat-title').textContent });
+        window.parent.postMessage({ type: 'toggle', isActive: specificBotState }, '*');
+    });
 });
+
 
 function updateUI(data) {
     const statusIndicator = document.getElementById('status-indicator');
     const chatTitleElement = document.getElementById('chat-title');
     const phoneNumberElement = document.getElementById('phone-number');
     const toggleButton = document.getElementById('toggle-button');
+    const toggleButton2 = document.getElementById('toggle-button2');
 
     isActive = data.isActive;
 
@@ -32,6 +40,7 @@ function updateUI(data) {
     }
 
     toggleButton.checked = isActive;
+    toggleButton2.checked = isActive;
 
     carregarDados(data.phoneNumber);
 }
