@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 function updateUI(data) {
     const statusIndicator = document.getElementById('status-indicator');
     const chatTitleElement = document.getElementById('chat-title');
@@ -27,6 +26,12 @@ function updateUI(data) {
     const toggleButton2 = document.getElementById('toggle-button2');
 
     isActive = data.isActive;
+
+    // Se o bot estiver desativado, limpar o conteúdo do iframe
+    if (!isActive) {
+        clearIframeContent();
+        return;
+    }
 
     statusIndicator.textContent = isActive ? 'Bot ON' : `Bot desativado para: ${data.chatTitle}`;
     statusIndicator.style.color = isActive ? 'green' : 'red';
@@ -44,6 +49,16 @@ function updateUI(data) {
 
     carregarDados(data.phoneNumber);
 }
+
+// Função para limpar o conteúdo do iframe
+function clearIframeContent() {
+    document.getElementById('status-indicator').textContent = '';
+    document.getElementById('chat-title').textContent = '';
+    document.getElementById('phone-number').textContent = '';
+    document.getElementById('dados-usuarios').style.display = 'none';
+    document.querySelector('.status').innerText = '';
+}
+
 
 function toggleBot() {
     isActive = !isActive;
@@ -73,6 +88,9 @@ function handleTokenSubmit() {
         document.getElementById('pPedidos').style.display = 'block';
         document.getElementById('pItens').style.display = 'block';
         document.getElementById('dados-usuarios').style.display = 'block';
+        document.getElementById('img').style.display = 'block';
+        document.getElementById('img2').style.display = 'block';
+        document.getElementById('img3').style.display = 'block';
 
         window.parent.postMessage({ type: 'update', isActive: true, chatTitle: 'Nome do Contato' }, '*');
     } else {
@@ -88,6 +106,8 @@ function validateToken(token) {
 }
 
 async function carregarDados(telefone) {
+    if (!isActive || !telefone) return; // Se o bot estiver desativado, não faz nada
+
     try {
         const response = await fetch('clientes.json');
         const data = await response.json();
@@ -134,7 +154,9 @@ async function carregarDados(telefone) {
             document.getElementById('dados-usuarios').style.display = 'block';
 
             // Limpa os campos quando o cliente não é encontrado
-            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido', 'img', 'data2', 'hora2', 'endereco2', 'preco2', 'pedido2', 'precoPedido2', 'img2', 'data3', 'hora3', 'endereco3', 'preco3', 'pedido3', 'precoPedido3', 'img3'].forEach(id => {
+            ['nome', 'email', 'numero_telefone', 'ano_inicio_cliente', 'data', 'hora', 'endereco', 'preco', 'pedido', 'precoPedido', 'img', 
+             'data2', 'hora2', 'endereco2', 'preco2', 'pedido2', 'precoPedido2', 'img2', 
+             'data3', 'hora3', 'endereco3', 'preco3', 'pedido3', 'precoPedido3', 'img3'].forEach(id => {
                 document.getElementById(id).innerText = '';
             });
         }
@@ -150,8 +172,11 @@ window.addEventListener('load', () => {
 });
 
 // Listener para mensagens recebidas do content script  
+// Escuta mensagens vindas do conteúdo
 window.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'update') {
         updateUI(event.data);
+    } else if (event.data && event.data.type === 'clear') {
+        clearIframeContent();
     }
 });

@@ -3,7 +3,7 @@ const chatStates = {}; // Objeto para armazenar o estado do bot para chats espec
 
 // Função para obter o número de telefone ao abrir um chat
 function obterNumeroTelefone() {
-    if (!isActive) return; // Verifica se o bot global está ativo
+    if (!isActive) return; // Verifica se o bot global está ativo e cancela a função se não estiver
 
     var amieElement = document.querySelector('._amie');
     if (amieElement) {
@@ -37,8 +37,6 @@ function obterNumeroTelefone() {
 
 // Função para injetar o iframe
 function injectIframe() {
-    if (!isActive) return; // Verifica se o bot está ativo
-
     const existingIframe = document.getElementById('my-custom-iframe');
     if (existingIframe) return existingIframe;
 
@@ -101,17 +99,23 @@ setInterval(() => {
 
 // Função para atualizar o iframe com as informações atuais
 function updateIframe() {
-    if (!isActive) return; // Verifica se o bot está ativo
-
     const iframe = document.getElementById('my-custom-iframe');
-    const data = {
-        type: 'update',
-        isActive: isActive,
-        chatTitle: getChatId(),
-        phoneNumber: localStorage.getItem('numeroTelefoneAtual')
-    };
+    
+    if (iframe) {
+        const data = {
+            type: 'update',
+            isActive: isActive,
+            chatTitle: getChatId(),
+            phoneNumber: localStorage.getItem('numeroTelefoneAtual')
+        };
 
-    iframe.contentWindow.postMessage(data, '*');
+        iframe.contentWindow.postMessage(data, '*');
+    }
+    
+    if (!isActive && iframe) {
+        // Esvazia o iframe se o bot estiver desativado
+        iframe.contentWindow.postMessage({ type: 'clear' }, '*');
+    }
 }
 
 // Função para ativar o bot ao mudar de chat
