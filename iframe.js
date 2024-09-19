@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
         isActive = toggleChatButton.checked;
         updateUI({ isActive: isActive && isGlobalActive, chatTitle: document.getElementById('chat-title').textContent });
         window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
+        
+        // Recarrega os dados do contato se o bot for reativado
+        if (isActive && isGlobalActive) {
+            const phoneNumber = localStorage.getItem('numeroTelefoneAtual');
+            carregarDados(phoneNumber);
+        }
     });
 });
 
@@ -48,10 +54,10 @@ function updateUI(data) {
     toggleChatButton.checked = isActive;
 
     if (isActive) {
-        carregarDados(data.phoneNumber); // Carrega dados somente se o bot estiver ativo
+        const phoneNumber = localStorage.getItem('numeroTelefoneAtual');
+        carregarDados(phoneNumber); // Carrega dados somente se o bot estiver ativo
     }
 }
-
 
 // Função para limpar o conteúdo do iframe
 function clearIframeContent() {
