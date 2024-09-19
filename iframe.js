@@ -1,20 +1,23 @@
 // IFRAME.JS
-let isActive = false;
+let isGlobalActive = true; // Estado global do bot (todos os chats)
+let isActive = false; // Estado do bot para o chat atual
 
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('toggle-button');
-    const toggleButton2 = document.getElementById('toggle-button2');
+    const toggleGlobalButton = document.getElementById('toggle-button');
+    const toggleChatButton = document.getElementById('toggle-button2');
 
-    toggleButton.addEventListener('change', () => {
-        isActive = toggleButton.checked;
-        updateUI({ isActive: isActive, chatTitle: document.getElementById('chat-title').textContent });
-        window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
+    // Controle global do bot (para todos os chats)
+    toggleGlobalButton.addEventListener('change', () => {
+        isGlobalActive = toggleGlobalButton.checked;
+        updateUI({ isActive: isGlobalActive, chatTitle: document.getElementById('chat-title').textContent });
+        window.parent.postMessage({ type: 'toggleGlobal', isGlobalActive: isGlobalActive }, '*');
     });
 
-    toggleButton2.addEventListener('change', () => {
-        const specificBotState = toggleButton2.checked;
-        updateUI({ isActive: specificBotState, chatTitle: document.getElementById('chat-title').textContent });
-        window.parent.postMessage({ type: 'toggle', isActive: specificBotState }, '*');
+    // Controle específico do bot (para o chat atual)
+    toggleChatButton.addEventListener('change', () => {
+        isActive = toggleChatButton.checked;
+        updateUI({ isActive: isActive && isGlobalActive, chatTitle: document.getElementById('chat-title').textContent });
+        window.parent.postMessage({ type: 'toggle', isActive: isActive }, '*');
     });
 });
 
@@ -22,33 +25,33 @@ function updateUI(data) {
     const statusIndicator = document.getElementById('status-indicator');
     const chatTitleElement = document.getElementById('chat-title');
     const phoneNumberElement = document.getElementById('phone-number');
-    const toggleButton = document.getElementById('toggle-button');
-    const toggleButton2 = document.getElementById('toggle-button2');
+    const toggleGlobalButton = document.getElementById('toggle-button');
+    const toggleChatButton = document.getElementById('toggle-button2');
 
-    isActive = data.isActive;
+    // Atualiza o estado global e local
+    isGlobalActive = data.isActive !== undefined ? data.isActive : isGlobalActive;
 
-    // Se o bot estiver desativado, limpar o conteúdo do iframe
-    if (!isActive) {
-        clearIframeContent();
+    if (!isGlobalActive) {
+        clearIframeContent(); // Limpa o conteúdo se o bot global estiver desativado
         return;
     }
+
+    isActive = data.isActive;
 
     statusIndicator.textContent = isActive ? 'Bot ON' : `Bot desativado para: ${data.chatTitle}`;
     statusIndicator.style.color = isActive ? 'green' : 'red';
 
     chatTitleElement.textContent = isActive ? data.chatTitle || '...' : '';
-    if (data.phoneNumber) {
-        phoneNumberElement.textContent = data.phoneNumber;
-        phoneNumberElement.style.display = 'block';
-    } else {
-        phoneNumberElement.style.display = 'none';
+    phoneNumberElement.style.display = isActive ? 'block' : 'none';
+
+    toggleGlobalButton.checked = isGlobalActive;
+    toggleChatButton.checked = isActive;
+
+    if (isActive) {
+        carregarDados(data.phoneNumber); // Carrega dados somente se o bot estiver ativo
     }
-
-    toggleButton.checked = isActive;
-    toggleButton2.checked = isActive;
-
-    carregarDados(data.phoneNumber);
 }
+
 
 // Função para limpar o conteúdo do iframe
 function clearIframeContent() {
@@ -56,9 +59,27 @@ function clearIframeContent() {
     document.getElementById('chat-title').textContent = '';
     document.getElementById('phone-number').textContent = '';
     document.getElementById('dados-usuarios').style.display = 'none';
-    document.querySelector('.status').innerText = '';
 }
 
+async function carregarDados(telefone) {
+    if (!isActive || !isGlobalActive || !telefone) return; // Não carrega dados se o bot global ou local estiver OFF
+
+    try {
+        const response = await fetch(chrome.runtime.getURL('dados.json'));
+        const dados = await response.json();
+        const user = dados.find(d => d.numero_telefone === telefone);
+
+        if (user) {
+            document.getElementById('nome').textContent = user.nome;
+            document.getElementById('email').textContent = user.email;
+            document.getElementById('numero_telefone').textContent = user.numero_telefone;
+            document.getElementById('ano_inicio_cliente').textContent = user.ano_inicio_cliente;
+            document.getElementById('dados-usuarios').style.display = 'block';
+        }
+    } catch (error) {
+        console.log('Erro ao carregar os dados do arquivo JSON:', error);
+    }
+}
 
 function toggleBot() {
     isActive = !isActive;
@@ -171,12 +192,11 @@ window.addEventListener('load', () => {
     submitTokenButton.addEventListener('click', handleTokenSubmit);
 });
 
-// Listener para mensagens recebidas do content script  
-// Escuta mensagens vindas do conteúdo
+// Escuta mensagens do script de conteúdo
 window.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'update') {
         updateUI(event.data);
     } else if (event.data && event.data.type === 'clear') {
-        clearIframeContent();
+        clearIframeContent(); // Limpa o iframe quando o bot estiver OFF
     }
 });
